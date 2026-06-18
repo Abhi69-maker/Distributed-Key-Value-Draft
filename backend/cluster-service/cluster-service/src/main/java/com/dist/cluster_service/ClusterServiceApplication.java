@@ -8,6 +8,8 @@ public class ClusterServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ClusterServiceApplication.class, args);
+		System.out.println("Cluster Service Application Started");
+
 	}
 
 }
