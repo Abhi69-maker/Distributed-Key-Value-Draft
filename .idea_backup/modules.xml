@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Distributed Key-value.iml" filepath="$PROJECT_DIR$/.idea/Distributed Key-value.iml" />
-      <module fileurl="file://$PROJECT_DIR$/backend/replication-service/replication-service/replication-service.iml" filepath="$PROJECT_DIR$/backend/replication-service/replication-service/replication-service.iml" />
     </modules>
   </component>
 </project>

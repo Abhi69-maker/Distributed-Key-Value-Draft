@@ -1,12 +1,30 @@
 # 🚀 Distributed Key Value Store
 
-![Java](https://img.shields.io/badge/Java-21-orange)
-![Spring Boot](https://img.shields.io/badge/SpringBoot-3-green)
-![Kafka](https://img.shields.io/badge/Kafka-EventDriven-black)
-![Redis](https://img.shields.io/badge/Redis-Cache-red)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
-![Docker](https://img.shields.io/badge/Docker-Containerized-blue)
-![React](https://img.shields.io/badge/React-Frontend-61DAFB)
+<p align="left">
+
+<img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=flat&logo=openjdk&logoColor=white" alt="Java">
+
+<img src="https://img.shields.io/badge/Spring_Boot-6DB33F.svg?style=flat&logo=springboot&logoColor=white" alt="Spring Boot">
+
+<img src="https://img.shields.io/badge/Apache_Kafka-231F20.svg?style=flat&logo=apachekafka&logoColor=white" alt="Kafka">
+
+<img src="https://img.shields.io/badge/Redis-DC382D.svg?style=flat&logo=redis&logoColor=white" alt="Redis">
+
+<img src="https://img.shields.io/badge/PostgreSQL-4169E1.svg?style=flat&logo=postgresql&logoColor=white" alt="PostgreSQL">
+
+<img src="https://img.shields.io/badge/Docker-2496ED.svg?style=flat&logo=Docker&logoColor=white" alt="Docker">
+
+<img src="https://img.shields.io/badge/React-61DAFB.svg?style=flat&logo=react&logoColor=black" alt="React">
+
+<img src="https://img.shields.io/badge/Postman-FF6C37.svg?style=flat&logo=postman&logoColor=white" alt="Postman">
+
+<img src="https://img.shields.io/badge/JUnit-25A162.svg?style=flat&logo=junit5&logoColor=white" alt="JUnit">
+
+<img src="https://img.shields.io/badge/Mockito-78A641.svg?style=flat&logoColor=white" alt="Mockito">
+
+</p>
+
+
 
 ---
 
