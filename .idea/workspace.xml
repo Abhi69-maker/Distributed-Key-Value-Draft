@@ -4,19 +4,50 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7cb090b2-bbfc-457e-a15b-f12e5af4186b" name="Changes" comment="" />
+    <list default="true" id="7cb090b2-bbfc-457e-a15b-f12e5af4186b" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/config/ClusterEventMetricsConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/config/KafkaConsumerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/consumer/KvEventMetricsConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/controller/MetricsController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/entity/Metric.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/entity/RequestStat.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/repository/MetricRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/repository/RequestStatRepo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/service/MetricService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/entity/KeyValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/entity/KeyValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/service/KeyValueService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/service/KeyValueService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/MetricsServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/MetricsServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/resources/application.properties" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
+    {
+      &quot;state&quot;: &quot;OPEN&quot;
+    }
+  ],
   &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;AjayLohith&quot;
+    &quot;state&quot;: &quot;OPEN&quot;
   }
 }</component>
   <component name="GithubPullRequestsUISettings">{
@@ -52,7 +83,7 @@
     "Spring Boot.EurekaServiceApplication.executor": "Run",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "feature/metrics-service",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -76,6 +107,17 @@
         <option value="QuarkusRunConfigurationType" />
         <option value="SpringBootApplicationConfigurationType" />
       </set>
+    </option>
+    <option name="configurationStatuses">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <map>
+              <entry key="ApiGatewayApplication" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.ApiGatewayApplication">
@@ -139,10 +181,46 @@
       <updated>1782031105809</updated>
       <workItem from="1782031108085" duration="5553000" />
       <workItem from="1782037437446" duration="1853000" />
+      <workItem from="1782064189408" duration="474000" />
+      <workItem from="1782103049965" duration="11892000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="origin/main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/controller/MetricsController.java</url>
+          <line>3</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
