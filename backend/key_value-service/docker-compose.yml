@@ -19,7 +19,7 @@ services:
 
   redis:
     image: redis:7
-    container_name: demo_redis
+    container_name: kv_redis
 
     ports:
       - "6379:6379"
