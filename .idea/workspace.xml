@@ -5,24 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7cb090b2-bbfc-457e-a15b-f12e5af4186b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/config/ClusterEventMetricsConsumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/config/KafkaConsumerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/consumer/KvEventMetricsConsumer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/controller/MetricsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/entity/Metric.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/entity/RequestStat.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/repository/MetricRepo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/repository/RequestStatRepo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/service/MetricService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/event/ClusterEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/event/KvEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/entity/KeyValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/entity/KeyValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/service/KeyValueService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/service/KeyValueService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/MetricsServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/MetricsServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/config/ClusterEventMetricsConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/consumer/ClusterEventMetricsConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/consumer/KvEventMetricsConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/consumer/KvEventMetricsConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/controller/MetricsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/controller/MetricsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/repository/MetricRepo.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/repository/MetricRepo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/service/MetricService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/service/MetricService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,36 +59,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.ApiGatewayApplication.executor": "Run",
-    "Spring Boot.EurekaServiceApplication.executor": "Run",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feature/metrics-service",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "run.configurations.included.in.services": "true",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.EurekaServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/metrics-service&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunDashboard">
     <option name="configurationTypes">
       <set>
@@ -183,6 +173,8 @@
       <workItem from="1782037437446" duration="1853000" />
       <workItem from="1782064189408" duration="474000" />
       <workItem from="1782103049965" duration="11892000" />
+      <workItem from="1782149046406" duration="90000" />
+      <workItem from="1782284759041" duration="4330000" />
     </task>
     <servers />
   </component>
@@ -211,16 +203,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/controller/MetricsController.java</url>
-          <line>3</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

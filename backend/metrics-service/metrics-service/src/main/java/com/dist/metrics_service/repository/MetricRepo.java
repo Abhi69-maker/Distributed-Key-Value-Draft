@@ -9,7 +9,10 @@ import java.util.UUID;
 
 @Repository
 public interface MetricRepo extends JpaRepository<Metric, UUID> {
-    long countByMetricNameAndMetricValue(String metricName, String metricValue);
+    long countByMetricNameAndMetricValue(
+            String metricName,
+            String metricValue
+    );
 
     long countByMetricName(String metricName);
 }
