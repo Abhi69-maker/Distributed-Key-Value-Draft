@@ -1,5 +1,6 @@
 package com.dist.key_value_service.service;
 
+import com.dist.key_value_service.cache.CacheService;
 import com.dist.key_value_service.dto.KVRequest;
 import com.dist.key_value_service.dto.KVResponse;
 import com.dist.key_value_service.entity.KV;
@@ -18,6 +19,7 @@ import java.util.List;
 public class KVService {
 
     private final KVRepository kvRepository;
+    private final CacheService cacheService;
 
     public KVResponse createKeyValue(KVRequest request) {
 
@@ -36,20 +38,43 @@ public class KVService {
 
         KV saved = kvRepository.save(kv);
 
-        return mapToResponse(saved);
+        KVResponse response =
+                mapToResponse(saved);
+
+        cacheService.put(
+                saved.getKey(),
+                response
+        );
+
+        return response;
+
+
     }
 
     public KVResponse getKeyValue(String key) {
 
-        log.info("Getting key {}", key);
+        var cached = cacheService.get(key);
+
+        if(cached.isPresent()){
+
+            System.out.println("CACHE HIT");
+
+            return (KVResponse) cached.get();
+        }
+
+        System.out.println("CACHE MISS");
 
         KV kv = kvRepository.findByKey(key)
                 .orElseThrow(() ->
                         new RuntimeException(
-                                "Key Not Found : " + key
-                        ));
+                                "Key Not Found"));
 
-        return mapToResponse(kv);
+        KVResponse response =
+                mapToResponse(kv);
+
+        cacheService.put(key,response);
+
+        return response;
     }
 
     public KVResponse updateKeyValue(
@@ -65,10 +90,19 @@ public class KVService {
                         ));
 
         kv.setValue(request.getValue());
+        KV updated =
+                kvRepository.save(kv);
 
-        KV updated = kvRepository.save(kv);
+        KVResponse response =
+                mapToResponse(updated);
 
-        return mapToResponse(updated);
+        cacheService.put(
+                updated.getKey(),
+                response
+        );
+        kv.setVersion(kv.getVersion() + 1);
+
+        return response;
     }
     @Transactional
     public void deleteByKey(String key) {
@@ -80,6 +114,7 @@ public class KVService {
                     "Key Not Found : " + key
             );
         }
+
 
         kvRepository.deleteByKey(key);
     }
