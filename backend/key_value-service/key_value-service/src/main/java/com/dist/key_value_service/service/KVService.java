@@ -4,6 +4,7 @@ import com.dist.key_value_service.dto.KVRequest;
 import com.dist.key_value_service.dto.KVResponse;
 import com.dist.key_value_service.entity.KV;
 import com.dist.key_value_service.repository.KVRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -69,7 +70,7 @@ public class KVService {
 
         return mapToResponse(updated);
     }
-
+    @Transactional
     public void deleteByKey(String key) {
 
         log.info("Deleting key {}", key);

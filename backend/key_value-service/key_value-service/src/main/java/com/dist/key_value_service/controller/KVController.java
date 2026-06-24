@@ -4,6 +4,7 @@ package com.dist.key_value_service.controller;
 import com.dist.key_value_service.dto.KVRequest;
 import com.dist.key_value_service.dto.KVResponse;
 import com.dist.key_value_service.service.KVService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
