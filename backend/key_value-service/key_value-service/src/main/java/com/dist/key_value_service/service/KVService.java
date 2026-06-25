@@ -1,9 +1,12 @@
 package com.dist.key_value_service.service;
 
+
 import com.dist.key_value_service.cache.CacheService;
 import com.dist.key_value_service.dto.KVRequest;
 import com.dist.key_value_service.dto.KVResponse;
 import com.dist.key_value_service.entity.KV;
+import com.dist.key_value_service.event.KVEvent;
+import com.dist.key_value_service.event.KVEventProducer;
 import com.dist.key_value_service.repository.KVRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -12,12 +15,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class KVService {
 
+
+    private final KVEventProducer eventProducer;
     private final KVRepository kvRepository;
     private final CacheService cacheService;
 
@@ -45,6 +51,16 @@ public class KVService {
                 saved.getKey(),
                 response
         );
+        eventProducer.publish(
+
+                KVEvent.builder()
+                        .operation("CREATE")
+                        .key(saved.getKey())
+                        .value(saved.getValue())
+                        .version(saved.getVersion())
+                        .nodeId(saved.getNodeId())
+                        .build()
+        );
 
         return response;
 
@@ -52,14 +68,15 @@ public class KVService {
     }
 
     public KVResponse getKeyValue(String key) {
+        log.info("Retrieving key {}", key);
 
-        var cached = cacheService.get(key);
+        Optional<KVResponse> cached = cacheService.get(key);
 
-        if(cached.isPresent()){
+        if (cached.isPresent()) {
 
-            System.out.println("CACHE HIT");
+            log.info("CACHE HIT");
 
-            return (KVResponse) cached.get();
+            return cached.get();
         }
 
         System.out.println("CACHE MISS");
@@ -90,6 +107,11 @@ public class KVService {
                         ));
 
         kv.setValue(request.getValue());
+
+        kv.setVersion(
+                kv.getVersion() + 1
+        );
+
         KV updated =
                 kvRepository.save(kv);
 
@@ -100,7 +122,15 @@ public class KVService {
                 updated.getKey(),
                 response
         );
-        kv.setVersion(kv.getVersion() + 1);
+
+        eventProducer.publish(
+
+                KVEvent.builder()
+                        .operation("UPDATE")
+                        .key(updated.getKey())
+                        .value(updated.getValue())
+                        .build()
+        );
 
         return response;
     }
@@ -109,14 +139,21 @@ public class KVService {
 
         log.info("Deleting key {}", key);
 
-        if (!kvRepository.existsByKey(key)) {
-            throw new RuntimeException(
-                    "Key Not Found : " + key
-            );
-        }
+        KV kv =
+                kvRepository.findByKey(key)
+                        .orElseThrow(() -> new RuntimeException("Key Not Found"));
 
 
+        eventProducer.publish(
+
+                KVEvent.builder()
+                        .operation("DELETE")
+                        .key(key)
+                        .value(null)
+                        .build()
+        );
         cacheService.evict(key);
+
 
 
         kvRepository.deleteByKey(key);
