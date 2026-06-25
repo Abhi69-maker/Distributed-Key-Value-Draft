@@ -7,6 +7,7 @@ import com.dist.key_value_service.service.KVService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 
+@Slf4j
 @RestController
 
 @RequiredArgsConstructor
@@ -28,6 +30,8 @@ public class KVController {
     @PostMapping("/create")
     public ResponseEntity<KVResponse> createKeyValue(
             @Valid @RequestBody KVRequest request) {
+
+
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
