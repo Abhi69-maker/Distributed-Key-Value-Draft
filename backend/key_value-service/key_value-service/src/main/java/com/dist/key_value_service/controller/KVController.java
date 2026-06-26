@@ -68,7 +68,7 @@ public class KVController {
         );
     }
 
-    @GetMapping("/{key}/exists")
+    @GetMapping("/exists/{key}")
     public ResponseEntity<Map<String,Object>> checkExistsKey(
             @PathVariable String key){
 

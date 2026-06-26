@@ -6,18 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="7cb090b2-bbfc-457e-a15b-f12e5af4186b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/docker-compose-infra.yml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/docker-compose-infra.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/cache/CacheService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/cache/CacheService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/cache/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/cache/RedisConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/config/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/config/RedisConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/KeyValueServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/KeyValueServiceApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/controller/KVController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/controller/KVController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/dto/KVResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/dto/KVResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/event/KVEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/event/KVEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/event/KVEventConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/event/KVEventConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/service/KVService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/service/KVService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/replication-service/replication-service/src/main/java/com/dist/replication_service/event/KvEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/replication-service/replication-service/src/main/java/com/dist/replication_service/event/KvEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/replication-service/replication-service/src/main/java/com/dist/replication_service/service/ReplicationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/replication-service/replication-service/src/main/java/com/dist/replication_service/service/ReplicationService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,6 +68,8 @@
     "Spring Boot.EurekaServiceApplication.executor": "Run",
     "Spring Boot.ReplicationServiceApplication.executor": "Run",
     "Spring Boot.kv-node-1.executor": "Run",
+    "Spring Boot.kv-node-2.executor": "Run",
+    "Spring Boot.kv-node-3.executor": "Run",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
     "git-widget-placeholder": "feature/replication-service",
@@ -113,13 +105,15 @@
             <map>
               <entry key="ReplicationServiceApplication" value="STOPPED" />
               <entry key="kv-node-1" value="STOPPED" />
+              <entry key="kv-node-2" value="FAILED" />
+              <entry key="kv-node-3" value="FAILED" />
             </map>
           </value>
         </entry>
       </map>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.kv-node-1">
+  <component name="RunManager" selected="Spring Boot.kv-node-2">
     <configuration name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="api-gateway" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.dist.api_gateway.ApiGatewayApplication" />
@@ -176,7 +170,7 @@
     <configuration name="kv-node-2" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <envs>
         <env name="DB_PASSWORD" value="postgres" />
-        <env name="DB_URL" value="jdbc:postgresql://localhost:5432/kv_db" />
+        <env name="DB_URL" value="jdbc:postgresql://localhost:5435/kv_db" />
         <env name="DB_USER" value="postgres" />
         <env name="KAFKA_BOOTSTRAP_SERVERS" value="localhost:9092" />
         <env name="KV_EVENTS_TOPIC" value="kv-events" />
@@ -194,7 +188,7 @@
     <configuration name="kv-node-3" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <envs>
         <env name="DB_PASSWORD" value="postgres" />
-        <env name="DB_URL" value="jdbc:postgresql://localhost:5432/kv_db" />
+        <env name="DB_URL" value="jdbc:postgresql://localhost:5435/kv_db" />
         <env name="DB_USER" value="postgres" />
         <env name="KAFKA_BOOTSTRAP_SERVERS" value="localhost:9092" />
         <env name="KV_EVENTS_TOPIC" value="kv-events" />
