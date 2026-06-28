@@ -36,11 +36,11 @@ public class KVController {
 
     @PutMapping("/{key}")
     public ResponseEntity<KVResponse> updateKeyValue(
-            @PathVariable String key,@Valid @RequestBody KVRequest kvRequest) {
+            @PathVariable String key,
+            @Valid @RequestBody KVRequest kvRequest) {
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(kvService.updateKeyValue(key, kvRequest));
+                .ok(kvService.updateKeyValue(key, kvRequest));
     }
 
     @GetMapping("/{key}")
