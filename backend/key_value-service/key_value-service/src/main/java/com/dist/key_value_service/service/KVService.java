@@ -30,12 +30,10 @@ public class KVService {
     private String nodeId;
 
     public KVResponse createKeyValue(KVRequest request) {
-        log.info("Created key {}", request.getKey());
+        log.info("[{}] Creating key '{}'", nodeId, request.getKey());
 
         if (kvRepository.existsByKey(request.getKey())) {
-            throw new RuntimeException(
-                    "Key already exists : " + request.getKey()
-            );
+            throw new RuntimeException("Key already exists : " + request.getKey());
         }
 
         KV kv = KV.builder()
@@ -45,8 +43,7 @@ public class KVService {
                 .build();
 
         KV saved = kvRepository.save(kv);
-        KVResponse response =
-                mapToResponse(saved);
+        KVResponse response = mapToResponse(saved);
 
         cacheService.put(
                 saved.getKey(),
@@ -102,7 +99,7 @@ public class KVService {
     public KVResponse updateKeyValue(
             String key,
             KVRequest request) {
-        log.info("Updating key {}", key);
+        log.info("[{}] UPDATE key '{}'", nodeId, key);
 
         KV kv = kvRepository.findByKey(key)
                 .orElseThrow(() ->
@@ -118,10 +115,11 @@ public class KVService {
         KV updated = kvRepository.save(kv);
         KVResponse response = mapToResponse(updated);
 
-        cacheService.put(
-                updated.getKey(),
-                response
-        );
+        cacheService.evict(key);            // ← evict stale cache, not put
+//        cacheService.put(
+//                updated.getKey(),
+//                response
+//        );
 
         eventProducer.publish(
                 KVEvent.builder()
