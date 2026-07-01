@@ -17,7 +17,7 @@
         </processorPath>
         <module name="key_value-service" />
       </profile>
-      <profile name="Annotation profile for replication-service" enabled="true">
+      <profile name="Annotation profile for metrics-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -25,8 +25,8 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
         </processorPath>
         <module name="api-gateway" />
-        <module name="replication-service" />
         <module name="metrics-service" />
+        <module name="replication-service" />
         <module name="cluster-service" />
       </profile>
     </annotationProcessing>

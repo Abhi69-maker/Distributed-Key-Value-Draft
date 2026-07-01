@@ -5,22 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7cb090b2-bbfc-457e-a15b-f12e5af4186b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/scheduler/HeartbeatScheduler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/config/JacksonConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/java/com/dist/cluster_service/config/ClusterServiceSwaggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/java/com/dist/cluster_service/ClusterServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/java/com/dist/cluster_service/ClusterServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/java/com/dist/cluster_service/entity/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/java/com/dist/cluster_service/entity/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/java/com/dist/cluster_service/scheduler/HeartbeatScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/java/com/dist/cluster_service/scheduler/HeartbeatScheduler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/java/com/dist/cluster_service/service/ClusterService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/java/com/dist/cluster_service/service/ClusterService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/KeyValueServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/KeyValueServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/MetricsServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/MetricsServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/config/KafkaConsumerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/config/KafkaConsumerConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/consumer/ClusterEventMetricsConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/consumer/ClusterEventMetricsConsumer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/controller/MetricsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/controller/MetricsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/event/ClusterEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/event/ClusterEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/event/KvEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/event/KvEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/service/MetricService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/java/com/dist/metrics_service/service/MetricService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/cluster-service/cluster-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/cluster-service/cluster-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/java/com/dist/cluster_service/controller/ClusterController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/java/com/dist/cluster_service/controller/ClusterController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/java/com/dist/cluster_service/scheduler/HeartbeatScheduler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/cluster-service/cluster-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/config/KVServiceSwaggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/controller/KVController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/controller/KVController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/scheduler/HeartbeatScheduler.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/java/com/dist/key_value_service/scheduler/HeartbeatScheduler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/key_value-service/key_value-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/metrics-service/metrics-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/hello.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,43 +66,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.ApiGatewayApplication.executor": "Run",
-    "Spring Boot.ClusterServiceApplication.executor": "Run",
-    "Spring Boot.EurekaServiceApplication.executor": "Run",
-    "Spring Boot.MetricsServiceApplication.executor": "Run",
-    "Spring Boot.ReplicationServiceApplication.executor": "Run",
-    "Spring Boot.kv-node-1.executor": "Run",
-    "Spring Boot.kv-node-2.executor": "Run",
-    "Spring Boot.kv-node-3.executor": "Run",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "MavenSettings",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ClusterServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.EurekaServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.MetricsServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.ReplicationServiceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.kv-node-1.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.kv-node-2.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.kv-node-3.executor&quot;: &quot;Run&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunDashboard">
     <option name="configurationTypes">
       <set>
@@ -121,11 +120,11 @@
               <entry key="ApiGatewayApplication" value="STOPPED" />
               <entry key="ClusterServiceApplication" value="STOPPED" />
               <entry key="EurekaServiceApplication" value="STOPPED" />
-              <entry key="MetricsServiceApplication" value="STOPPED" />
-              <entry key="ReplicationServiceApplication" value="STOPPED" />
+              <entry key="MetricsServiceApplication" value="FAILED" />
+              <entry key="ReplicationServiceApplication" value="FAILED" />
               <entry key="kv-node-1" value="STOPPED" />
-              <entry key="kv-node-2" value="STOPPED" />
-              <entry key="kv-node-3" value="STOPPED" />
+              <entry key="kv-node-2" value="FAILED" />
+              <entry key="kv-node-3" value="FAILED" />
             </map>
           </value>
         </entry>
@@ -262,7 +261,10 @@
       <workItem from="1782535196836" duration="2555000" />
       <workItem from="1782625160496" duration="11357000" />
       <workItem from="1782645210426" duration="2730000" />
-      <workItem from="1782664064529" duration="4193000" />
+      <workItem from="1782664064529" duration="4778000" />
+      <workItem from="1782710036291" duration="5585000" />
+      <workItem from="1782727212406" duration="1030000" />
+      <workItem from="1782883308465" duration="3434000" />
     </task>
     <servers />
   </component>
