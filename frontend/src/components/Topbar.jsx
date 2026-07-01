@@ -1,36 +1,40 @@
-import React from 'react'
-import { Badge, LiveDot } from './UI.jsx'
+import { Badge } from './UI.jsx'
 
-const PAGE_TITLES = {
-    dashboard: 'Dashboard',
-    cluster:   'Cluster Status',
-    metrics:   'Metrics',
-    browser:   'Key Browser',
-    kafka:     'Kafka Events',
-    logs:      'Audit Log',
-}
+export default function Topbar({ state }) {
+    const onlineNodes = state.nodes.filter(n => n.status === 'online').length
+    const total       = state.nodes.length
 
-export default function Topbar({ page, aliveCount, metrics }) {
-    const healthy = aliveCount === 3
-    const degraded = aliveCount === 2
     return (
-        <header style={{
-            display: 'flex', alignItems: 'center', gap: 12,
-            padding: '10px 20px', borderBottom: '0.5px solid var(--border)',
-            background: 'var(--bg2)', flexShrink: 0,
-        }}>
-            <h1 style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)', flex: 1 }}>
-                {PAGE_TITLES[page] || page}
-            </h1>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                <LiveDot />
-                <span style={{ fontSize: 10, color: 'var(--text3)', fontFamily: 'var(--mono)' }}>LIVE</span>
+        <header className="topbar">
+            <div className="topbar-logo">
+                <div className="topbar-logo-mark">⚡</div>
+                <span>KV Control Plane</span>
             </div>
-            <Badge color={healthy ? 'green' : degraded ? 'amber' : 'red'}>
-                {healthy ? 'Cluster Healthy' : degraded ? 'Degraded' : 'Critical'}
-            </Badge>
-            <Badge color="cyan">{aliveCount} / 3 Nodes</Badge>
-            <Badge color="gray">{metrics.rps.toLocaleString()} rps</Badge>
+
+            <div className="topbar-divider" />
+
+            <div className="topbar-badges">
+                <Badge color={state.gatewayOnline ? 'emerald' : 'crimson'} dot>
+                    Gateway {state.gatewayOnline ? 'Online' : 'Offline'}
+                </Badge>
+                <Badge color={onlineNodes === total ? 'emerald' : onlineNodes > 0 ? 'amber' : 'crimson'}>
+                    {onlineNodes}/{total} Nodes
+                </Badge>
+                {state.kafka.topics.length > 0 && (
+                    <Badge color="amber">Kafka Connected</Badge>
+                )}
+            </div>
+
+            <div className="topbar-right">
+                <div className="live-pulse">
+                    <div className="pulse-dot" />
+                    <span>
+            {state.requestsPerSec != null
+                ? `${state.requestsPerSec} req/s`
+                : 'Awaiting data'}
+          </span>
+                </div>
+            </div>
         </header>
     )
 }

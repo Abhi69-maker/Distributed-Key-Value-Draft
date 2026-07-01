@@ -1,125 +1,103 @@
-import React, { useRef, useEffect } from 'react'
+import { Line, Doughnut } from 'react-chartjs-2'
 import {
-    Chart as ChartJS,
-    CategoryScale, LinearScale, PointElement, LineElement,
-    ArcElement, BarElement, Tooltip, Filler, Legend
+    Chart as ChartJS, LineElement, PointElement, LinearScale, CategoryScale,
+    ArcElement, Tooltip, Legend, Filler
 } from 'chart.js'
-import { Line, Doughnut, Bar } from 'react-chartjs-2'
-import { Card, SectionLabel, MetricCard } from '../components/UI.jsx'
-import { Activity, Zap, Database, AlertCircle } from 'lucide-react'
+import { Gauge, PieChart } from 'lucide-react'
+import { Card, EmptyState } from '../components/UI.jsx'
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, ArcElement, BarElement, Tooltip, Filler, Legend)
+ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, ArcElement, Tooltip, Legend, Filler)
 
-const GRID = 'rgba(255,255,255,0.05)'
-const TICK = '#4a5568'
+const chartTextColor = '#7A90B8'
+const gridColor = '#1E2D4A'
 
-export default function Metrics({ store }) {
-    const { rpsHistory, metrics } = store
+export default function Metrics({ state }) {
+    const { rpsHistory, cacheHistory, nodes } = state
 
-    const rpsData = {
-        labels: rpsHistory.map((_, i) => i % 5 === 0 ? `-${30 - i}s` : ''),
+    const lineData = {
+        labels: rpsHistory.map(d => d.t),
         datasets: [{
-            label: 'RPS',
-            data: rpsHistory,
-            borderColor: '#00d4ff',
-            backgroundColor: 'rgba(0,212,255,0.08)',
-            borderWidth: 1.5, pointRadius: 0, fill: true, tension: 0.4,
+            label: 'Requests / sec',
+            data: rpsHistory.map(d => d.v),
+            borderColor: '#00C8FF',
+            backgroundColor: 'rgba(0,200,255,0.08)',
+            tension: 0.35,
+            fill: true,
+            pointRadius: 0,
+            borderWidth: 2,
         }],
     }
-    const rpsOpts = {
-        responsive: true, maintainAspectRatio: false, animation: false,
+
+    const lineOpts = {
+        responsive: true,
+        maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-            x: { grid: { color: GRID }, ticks: { color: TICK, font: { size: 9, family: 'JetBrains Mono' } } },
-            y: { grid: { color: GRID }, ticks: { color: TICK, font: { size: 9, family: 'JetBrains Mono' } } },
+            x: { ticks: { color: chartTextColor, maxTicksLimit: 6 }, grid: { color: gridColor } },
+            y: { ticks: { color: chartTextColor }, grid: { color: gridColor }, beginAtZero: true },
         },
     }
 
-    const cacheData = {
-        labels: ['Cache Hits', 'Cache Misses'],
+    const latestCache = cacheHistory.length ? cacheHistory[cacheHistory.length - 1].v : null
+    const donutData = {
+        labels: ['Hit', 'Miss'],
         datasets: [{
-            data: [metrics.hitRate, 100 - metrics.hitRate],
-            backgroundColor: ['#22c55e', 'rgba(255,255,255,0.07)'],
-            borderWidth: 0, hoverOffset: 4,
+            data: latestCache != null ? [latestCache, 100 - latestCache] : [0, 0],
+            backgroundColor: ['#00E87A', '#1E2D4A'],
+            borderWidth: 0,
         }],
     }
-    const cacheOpts = {
-        responsive: true, maintainAspectRatio: false, animation: false,
-        plugins: { legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 10, family: 'JetBrains Mono' }, boxWidth: 10, padding: 12 } } },
+
+    const donutOpts = {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '72%',
+        plugins: { legend: { labels: { color: chartTextColor, font: { size: 11 } } } },
     }
 
-    const nodeBarData = {
-        labels: ['node-1', 'node-2', 'node-3'],
-        datasets: [
-            { label: 'Memory MB', data: [342, 318, 305], backgroundColor: 'rgba(0,212,255,0.5)', borderRadius: 4 },
-            { label: 'CPU %',     data: [34,  28,  22],  backgroundColor: 'rgba(139,92,246,0.5)', borderRadius: 4 },
-        ],
-    }
-    const barOpts = {
-        responsive: true, maintainAspectRatio: false, animation: false,
-        plugins: { legend: { labels: { color: '#94a3b8', font: { size: 10, family: 'JetBrains Mono' }, boxWidth: 10 } } },
-        scales: {
-            x: { grid: { color: GRID }, ticks: { color: TICK, font: { size: 10, family: 'JetBrains Mono' } } },
-            y: { grid: { color: GRID }, ticks: { color: TICK, font: { size: 9, family: 'JetBrains Mono' } } },
-        },
-    }
-
-    const latencyData = {
-        labels: ['p50','p75','p90','p95','p99','p999'],
+    const memData = {
+        labels: nodes.map(n => n.id),
         datasets: [{
-            label: 'Latency (ms)',
-            data: [2, 4, 8, 14, 28, 62],
-            borderColor: '#f59e0b',
-            backgroundColor: 'rgba(245,158,11,0.08)',
-            borderWidth: 1.5, pointRadius: 3, fill: true, tension: 0.3,
-            pointBackgroundColor: '#f59e0b',
+            label: 'Memory (MB)',
+            data: nodes.map(n => n.memoryMb ?? 0),
+            backgroundColor: '#A78BFA',
+            borderRadius: 4,
         }],
-    }
-    const latOpts = {
-        responsive: true, maintainAspectRatio: false, animation: false,
-        plugins: { legend: { display: false } },
-        scales: {
-            x: { grid: { color: GRID }, ticks: { color: TICK, font: { size: 10, family: 'JetBrains Mono' } } },
-            y: { grid: { color: GRID }, ticks: { color: TICK, font: { size: 9, family: 'JetBrains Mono' } } },
-        },
     }
 
     return (
-        <div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 14 }}>
-                <MetricCard label="Total Requests"      value="84,210"  sub="Since startup"      icon={Activity}     accentColor="#00d4ff" />
-                <MetricCard label="Replication Events"  value="14,821"  sub="Across all topics"  icon={Database}     accentColor="#8b5cf6" />
-                <MetricCard label="Cache Hits"          value="73,511"  sub="Redis read-through" icon={Zap}          accentColor="#22c55e" />
-                <MetricCard label="Error Rate"          value="0.02%"   sub="Well below SLA"     icon={AlertCircle}  accentColor="#22c55e" subColor="#22c55e" />
+        <div className="fade-in">
+            <div className="page-header">
+                <div className="page-title">Metrics</div>
+                <div className="page-sub">Charted directly from polled backend metrics — empty until data arrives</div>
             </div>
 
-            <Card style={{ marginBottom: 12 }}>
-                <SectionLabel>Requests Per Second — Live</SectionLabel>
-                <div style={{ height: 140 }}>
-                    <Line data={rpsData} options={rpsOpts} />
-                </div>
-            </Card>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
-                <Card>
-                    <SectionLabel>Cache Hit / Miss Ratio</SectionLabel>
-                    <div style={{ height: 150 }}>
-                        <Doughnut data={cacheData} options={cacheOpts} />
-                    </div>
+            <div className="grid-2" style={{ marginBottom: 16 }}>
+                <Card title="Throughput (req/s)">
+                    {rpsHistory.length === 0 ? (
+                        <EmptyState icon={Gauge} title="No throughput data" description="Will populate once /api/metrics/rps starts responding." />
+                    ) : (
+                        <div style={{ height: 220 }}><Line data={lineData} options={lineOpts} /></div>
+                    )}
                 </Card>
-                <Card>
-                    <SectionLabel>Read Latency Percentiles</SectionLabel>
-                    <div style={{ height: 150 }}>
-                        <Line data={latencyData} options={latOpts} />
-                    </div>
+
+                <Card title="Cache Hit / Miss Ratio">
+                    {latestCache == null ? (
+                        <EmptyState icon={PieChart} title="No cache data" description="Will populate once /api/cache/stats starts responding." />
+                    ) : (
+                        <div style={{ height: 220 }}><Doughnut data={donutData} options={donutOpts} /></div>
+                    )}
                 </Card>
             </div>
 
-            <Card>
-                <SectionLabel>Node Resource Comparison</SectionLabel>
-                <div style={{ height: 160 }}>
-                    <Bar data={nodeBarData} options={barOpts} />
-                </div>
+            <Card title="Node Memory Usage">
+                {nodes.every(n => n.memoryMb == null) ? (
+                    <EmptyState icon={Gauge} title="No memory data" description="Will populate once each node's /actuator/metrics endpoint responds." />
+                ) : (
+                    <div style={{ height: 200 }}>
+                        <Line data={memData} options={{ ...lineOpts, scales: { ...lineOpts.scales } }} />
+                    </div>
+                )}
             </Card>
         </div>
     )

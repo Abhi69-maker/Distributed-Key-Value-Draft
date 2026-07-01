@@ -1,132 +1,203 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
-import { INITIAL_KV_DATA, KAFKA_TOPICS, KEY_NAMES, NODE_NAMES, EVENT_TYPES, OPS } from '../data/seed.js'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { NODE_URLS, GATEWAY_URL, POLL_INTERVAL } from '../data/seed.js'
 
-function nowStr() {
-    const d = new Date()
-    return [d.getHours(), d.getMinutes(), d.getSeconds()]
-        .map(n => String(n).padStart(2, '0')).join(':')
-}
-function randOf(arr) { return arr[Math.floor(Math.random() * arr.length)] }
-function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min }
+const ts = () => new Date().toLocaleTimeString('en-US', { hour12: false })
 
-function makeEvent() {
-    return {
-        id: Math.random().toString(36).slice(2),
-        type: randOf(EVENT_TYPES),
-        key: randOf(KEY_NAMES) + ':' + randInt(1, 9999),
-        node: randOf(NODE_NAMES),
-        time: nowStr(),
-        ts: Date.now(),
+async function safeFetch(url, opts = {}) {
+    try {
+        const r = await fetch(url, { signal: AbortSignal.timeout(4000), ...opts })
+        if (r.status === 404) return null
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
+        return await r.json()
+    } catch {
+        return null
     }
 }
 
-function makeAuditEntry(op, key, node) {
-    return {
-        id: Math.random().toString(36).slice(2),
-        op: op || randOf(OPS),
-        key: key || randOf(KEY_NAMES) + ':' + randInt(1, 9999),
-        node: node || randOf(NODE_NAMES),
-        ts: nowStr(),
-        full: new Date().toISOString().replace('T', ' ').substring(0, 19),
-    }
-}
-
-function seedAudit() {
-    return Array.from({ length: 40 }, (_, i) => {
-        const d = new Date(Date.now() - i * 18000)
-        const ts = d.toISOString().replace('T', ' ').substring(0, 19)
-        return {
-            id: i.toString(),
-            op: OPS[i % 3],
-            key: KEY_NAMES[i % KEY_NAMES.length] + ':' + (1000 + i),
-            node: NODE_NAMES[i % 3],
-            ts: ts.substring(11),
-            full: ts,
-        }
-    })
+const INITIAL = {
+    nodes: Object.keys(NODE_URLS).map(id => ({
+        id, url: NODE_URLS[id], status: 'unknown',
+        cpu: null, memoryMb: null, keys: null,
+        kafkaOffset: null, storageBytes: null, lastSeen: null,
+    })),
+    gatewayOnline: false, totalKeys: 0, cacheHitRate: null,
+    requestsPerSec: null, replicationLag: null,
+    kvEntries: [], events: [],
+    kafka: { topics: [], totalMessages: 0, totalRate: 0 },
+    auditLog: [], rpsHistory: [], cacheHistory: [],
 }
 
 export function useClusterStore() {
-    const [kvData, setKvData] = useState(INITIAL_KV_DATA)
-    const [events, setEvents] = useState([])
-    const [auditLog, setAuditLog] = useState(seedAudit)
-    const [topics, setTopics] = useState(KAFKA_TOPICS)
-    const [rpsHistory, setRpsHistory] = useState(() => Array.from({ length: 30 }, () => randInt(900, 1500)))
-    const [metrics, setMetrics] = useState({ keys: 2847, hitRate: 87, rps: 1204, lag: 4 })
-    const [nodeStatus, setNodeStatus] = useState({
-        'node-1': { alive: true, cpu: 34, mem: 342, keys: 2847, offset: 14821, role: 'Leader' },
-        'node-2': { alive: true, cpu: 28, mem: 318, keys: 2847, offset: 14819, role: 'Follower' },
-        'node-3': { alive: true, cpu: 22, mem: 305, keys: 2847, offset: 14817, role: 'Follower' },
-    })
+    const [state, setState] = useState(INITIAL)
+    const pollRef = useRef(null)
 
     const pushEvent = useCallback((ev) => {
-        setEvents(prev => {
-            const next = [...prev, ev]
-            return next.length > 300 ? next.slice(-300) : next
+        setState(s => ({
+            ...s,
+            events: [{ id: Date.now() + Math.random(), time: ts(), ...ev }, ...s.events].slice(0, 200),
+        }))
+    }, [])
+
+    const pushAudit = useCallback((entry) => {
+        setState(s => ({
+            ...s,
+            auditLog: [{ id: Date.now() + Math.random(), time: ts(), ...entry }, ...s.auditLog].slice(0, 500),
+        }))
+    }, [])
+
+    const pollHealth = useCallback(async () => {
+        const results = await Promise.all(
+            Object.entries(NODE_URLS).map(async ([id, url]) => {
+                const health  = await safeFetch(`${url}/actuator/health`)
+                const metrics = await safeFetch(`${url}/actuator/metrics/jvm.memory.used`)
+                const cpu     = await safeFetch(`${url}/actuator/metrics/process.cpu.usage`)
+                const online  = health?.status === 'UP'
+                return {
+                    id,
+                    status: online ? 'online' : (health === null ? 'offline' : 'degraded'),
+                    memoryMb: metrics?.measurements?.[0]?.value
+                        ? Math.round(metrics.measurements[0].value / 1024 / 1024) : null,
+                    cpu: cpu?.measurements?.[0]?.value != null
+                        ? Math.round(cpu.measurements[0].value * 100) : null,
+                    lastSeen: online ? ts() : null,
+                }
+            })
+        )
+        setState(s => ({
+            ...s,
+            nodes: s.nodes.map(n => {
+                const r = results.find(x => x.id === n.id)
+                return r ? { ...n, ...r } : n
+            }),
+        }))
+    }, [])
+
+    const pollGateway = useCallback(async () => {
+        const health  = await safeFetch(`${GATEWAY_URL}/actuator/health`)
+        const cache   = await safeFetch(`${GATEWAY_URL}/api/v1/dashboard/cache-stats`)
+        const kvMeta  = await safeFetch(`${GATEWAY_URL}/api/v1/dashboard/store-meta`)
+        const kafkaSt = await safeFetch(`${GATEWAY_URL}/api/v1/dashboard/kafka-stats`)
+        const rps     = await safeFetch(`${GATEWAY_URL}/api/v1/dashboard/rps`)
+
+        setState(s => {
+            const now = ts()
+            const rpsVal   = rps?.value ?? null
+            const cacheVal = cache?.hitRate != null ? Math.round(cache.hitRate * 100) : null
+            return {
+                ...s,
+                gatewayOnline:  health?.status === 'UP',
+                totalKeys:      kvMeta?.totalKeys ?? s.totalKeys,
+                cacheHitRate:   cacheVal ?? s.cacheHitRate,
+                requestsPerSec: rpsVal   ?? s.requestsPerSec,
+                replicationLag: kvMeta?.replicationLagMs ?? s.replicationLag,
+                kafka: kafkaSt ? {
+                    topics:        kafkaSt.topics ?? [],
+                    totalMessages: kafkaSt.totalMessages ?? 0,
+                    totalRate:     kafkaSt.totalRate ?? 0,
+                } : s.kafka,
+                rpsHistory:   rpsVal   != null ? [...s.rpsHistory,   { t: now, v: rpsVal }].slice(-40) : s.rpsHistory,
+                cacheHistory: cacheVal != null ? [...s.cacheHistory, { t: now, v: cacheVal }].slice(-40) : s.cacheHistory,
+            }
         })
     }, [])
 
-    const addKV = useCallback((key, value, node) => {
-        if (!key.trim()) return
-        const entry = { key: key.trim(), value: value.trim(), node, ttl: '\u221e', cached: false }
-        setKvData(prev => [entry, ...prev.filter(r => r.key !== key.trim())])
-        const ev = makeEvent()
-        ev.type = 'create'; ev.key = key.trim(); ev.node = node; ev.time = nowStr()
-        pushEvent(ev)
-        setAuditLog(prev => [makeAuditEntry('CREATE', key.trim(), node), ...prev])
-    }, [pushEvent])
-
-    const deleteKV = useCallback((key) => {
-        setKvData(prev => prev.filter(r => r.key !== key))
-        const ev = makeEvent()
-        ev.type = 'delete'; ev.key = key; ev.time = nowStr()
-        pushEvent(ev)
-        setAuditLog(prev => [makeAuditEntry('DELETE', key, 'node-1'), ...prev])
-    }, [pushEvent])
-
-    const toggleNode = useCallback((nodeId) => {
-        setNodeStatus(prev => {
-            const cur = prev[nodeId]
-            const ev = makeEvent()
-            ev.type = 'health'
-            ev.key = nodeId + (cur.alive ? ' went offline' : ' came online')
-            ev.node = nodeId; ev.time = nowStr()
-            pushEvent(ev)
-            return { ...prev, [nodeId]: { ...cur, alive: !cur.alive } }
-        })
-    }, [pushEvent])
-
-    // Live tick
-    useEffect(() => {
-        const id = setInterval(() => {
-            const ev = makeEvent()
-            pushEvent(ev)
-            setAuditLog(prev => [makeAuditEntry(), ...prev].slice(0, 200))
-            setRpsHistory(prev => {
-                const next = [...prev.slice(1), randInt(900, 1600)]
-                return next
-            })
-            setMetrics({
-                keys: randInt(2840, 2860),
-                hitRate: randInt(80, 93),
-                rps: randInt(900, 1600),
-                lag: randInt(2, 12),
-            })
-            setTopics(prev => prev.map(t => ({ ...t, msgs: t.msgs + t.rate })))
-            setNodeStatus(prev => ({
-                'node-1': { ...prev['node-1'], cpu: randInt(28, 45), offset: prev['node-1'].offset + randInt(5, 15) },
-                'node-2': { ...prev['node-2'], cpu: randInt(20, 38), offset: prev['node-2'].offset + randInt(3, 12) },
-                'node-3': { ...prev['node-3'], cpu: prev['node-3'].alive ? randInt(15, 32) : 0, offset: prev['node-3'].alive ? prev['node-3'].offset + randInt(2, 10) : prev['node-3'].offset },
+    // Auto-fetches all keys every poll cycle — no manual refresh needed
+    const pollKeys = useCallback(async () => {
+        const res = await safeFetch(`${GATEWAY_URL}/api/v1/keys?page=0&pageSize=100`)
+        if (res) {
+            const raw = Array.isArray(res) ? res : (res.entries ?? [])
+            const kvEntries = raw.map(e => ({
+                key:       e.key,
+                value:     e.value,
+                node:      e.nodeId  || 'gateway',
+                ttl:       e.ttl     ?? null,
+                updatedAt: e.updatedAt || e.createdAt || ts(),
             }))
-        }, 2000)
-        return () => clearInterval(id)
-    }, [pushEvent])
+            setState(s => ({ ...s, kvEntries, totalKeys: kvEntries.length }))
+        }
+    }, [])
 
-    const aliveCount = Object.values(nodeStatus).filter(n => n.alive).length
+    useEffect(() => {
+        const run = () => { pollHealth(); pollGateway(); pollKeys() }
+        run()
+        pollRef.current = setInterval(run, POLL_INTERVAL)
+        return () => clearInterval(pollRef.current)
+    }, [pollHealth, pollGateway, pollKeys])
 
-    return {
-        kvData, events, auditLog, topics, rpsHistory,
-        metrics, nodeStatus, aliveCount,
-        addKV, deleteKV, toggleNode,
-    }
+    // KVRequest only has key + value — no ttl field in backend DTO
+    const kvPut = useCallback(async ({ key, value, node }) => {
+        const url = node ? NODE_URLS[node] : GATEWAY_URL
+        const t0 = Date.now()
+        const res = await safeFetch(`${url}/api/v1/keys/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key, value }),
+        })
+        const latencyMs = Date.now() - t0
+        const ok = res !== null
+        const entry = {
+            key, value,
+            node:      res?.nodeId || node || 'gateway',
+            ttl:       null,
+            updatedAt: res?.updatedAt || res?.createdAt || ts(),
+        }
+        if (ok) {
+            setState(s => {
+                const existing = s.kvEntries.findIndex(e => e.key === key)
+                const kvEntries = existing >= 0
+                    ? s.kvEntries.map((e, i) => i === existing ? entry : e)
+                    : [entry, ...s.kvEntries]
+                return { ...s, kvEntries, totalKeys: kvEntries.length }
+            })
+        }
+        pushEvent({ op: 'PUT', key, node: entry.node, hit: null })
+        pushAudit({ op: 'PUT', key, node: entry.node, status: ok ? 'OK' : 'ERROR', latencyMs })
+        return { ok, res }
+    }, [pushEvent, pushAudit])
+
+    const kvGet = useCallback(async ({ key, node }) => {
+        const url = node ? NODE_URLS[node] : GATEWAY_URL
+        const t0 = Date.now()
+        const res = await safeFetch(`${url}/api/v1/keys/${encodeURIComponent(key)}`)
+        const latencyMs = Date.now() - t0
+        const ok  = res !== null
+        const hit = res?.source === 'cache' || res?.cacheHit === true
+        pushEvent({ op: 'GET', key, node: res?.nodeId || node || 'gateway', hit })
+        pushAudit({ op: 'GET', key, node: res?.nodeId || node || 'gateway', status: ok ? 'OK' : 'MISS', latencyMs })
+        return { ok, hit, res }
+    }, [pushEvent, pushAudit])
+
+    const kvDelete = useCallback(async ({ key, node }) => {
+        const url = node ? NODE_URLS[node] : GATEWAY_URL
+        const t0 = Date.now()
+        const res = await safeFetch(`${url}/api/v1/keys/delete/${encodeURIComponent(key)}`, { method: 'DELETE' })
+        const latencyMs = Date.now() - t0
+        const ok = res !== null
+        if (ok) {
+            setState(s => {
+                const kvEntries = s.kvEntries.filter(e => e.key !== key)
+                return { ...s, kvEntries, totalKeys: kvEntries.length }
+            })
+        }
+        pushEvent({ op: 'DELETE', key, node: node || 'gateway', hit: null })
+        pushAudit({ op: 'DELETE', key, node: node || 'gateway', status: ok ? 'OK' : 'ERROR', latencyMs })
+        return { ok, res }
+    }, [pushEvent, pushAudit])
+
+    const refreshKeys = useCallback(async () => {
+        const res = await safeFetch(`${GATEWAY_URL}/api/v1/keys?page=0&pageSize=100`)
+        if (res) {
+            const raw = Array.isArray(res) ? res : (res.entries ?? [])
+            const kvEntries = raw.map(e => ({
+                key: e.key, value: e.value,
+                node: e.nodeId || 'gateway',
+                ttl: e.ttl ?? null,
+                updatedAt: e.updatedAt || e.createdAt || ts(),
+            }))
+            setState(s => ({ ...s, kvEntries, totalKeys: kvEntries.length }))
+        }
+        return res
+    }, [])
+
+    return { state, actions: { kvPut, kvGet, kvDelete, refreshKeys } }
 }

@@ -1,67 +1,122 @@
-import React from 'react'
-import { Database, Zap, Activity, Clock } from 'lucide-react'
-import { MetricCard, Card, SectionLabel, EventRow, LiveDot } from '../components/UI.jsx'
+import { Activity, Database, Gauge, Layers, Radio } from 'lucide-react'
+import { Card, MetricCard, EmptyState, EventRow } from '../components/UI.jsx'
 import ClusterCanvas from '../components/ClusterCanvas.jsx'
 
-function Sparkline({ data }) {
-    const max = Math.max(...data, 1)
+export default function Dashboard({ state }) {
+    const onlineNodes = state.nodes.filter(n => n.status === 'online').length
+
     return (
-        <div style={{ display: 'flex', alignItems: 'flex-end', gap: 2, height: 36 }}>
-            {data.map((v, i) => (
-                <div key={i} style={{
-                    flex: 1, borderRadius: '1px 1px 0 0', minHeight: 2,
-                    height: `${Math.max(2, Math.round((v / max) * 36))}px`,
-                    background: i === data.length - 1 ? '#00d4ff' : 'rgba(0,212,255,0.35)',
-                    transition: 'height 0.3s ease',
-                }} />
-            ))}
+        <div className="fade-in">
+            <div className="page-header">
+                <div className="page-title">Dashboard</div>
+                <div className="page-sub">Live cluster overview — updates only from real backend responses</div>
+            </div>
+
+            <div className="metrics-grid">
+                <MetricCard
+                    label="Total Keys"
+                    value={state.totalKeys}
+                    sub={`${state.kvEntries.length} loaded in browser`}
+                    accent="cyan"
+                />
+                <MetricCard
+                    label="Cache Hit Rate"
+                    value={state.cacheHitRate != null ? `${state.cacheHitRate}%` : null}
+                    sub={state.cacheHitRate == null ? 'No data yet' : 'Redis cache'}
+                    accent="emerald"
+                />
+                <MetricCard
+                    label="Requests / sec"
+                    value={state.requestsPerSec}
+                    sub={state.requestsPerSec == null ? 'No data yet' : 'Gateway throughput'}
+                    accent="amber"
+                />
+                <MetricCard
+                    label="Replication Lag"
+                    value={state.replicationLag != null ? `${state.replicationLag}ms` : null}
+                    sub={state.replicationLag == null ? 'No data yet' : 'Cross-node sync'}
+                    accent="violet"
+                />
+            </div>
+
+            <div className="grid-2" style={{ gridTemplateColumns: '1.6fr 1fr', marginBottom: 16, alignItems: 'start' }}>
+                <Card title="Cluster Topology" action={
+                    <span style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+            {onlineNodes}/{state.nodes.length} online
+          </span>
+                }>
+                    <ClusterCanvas nodes={state.nodes} />
+                </Card>
+
+                <Card title="Live Events" action={<Radio size={14} color="var(--text-muted)" />}>
+                    {state.events.length === 0 ? (
+                        <EmptyState
+                            icon={Activity}
+                            title="No events yet"
+                            description="Events appear here when you PUT, GET, or DELETE keys, or when a node's health status changes."
+                        />
+                    ) : (
+                        <div className="event-list">
+                            {state.events.slice(0, 12).map(ev => <EventRow key={ev.id} ev={ev} />)}
+                        </div>
+                    )}
+                </Card>
+            </div>
+
+            <div className="grid-2">
+                <Card title="Node Summary">
+                    <div className="table-wrap">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>Node</th><th>Status</th><th>CPU</th><th>Memory</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {state.nodes.map(n => (
+                                <tr key={n.id}>
+                                    <td className="primary">{n.id}</td>
+                                    <td>
+                                        <span className={`status-dot ${n.status}`} style={{ marginRight: 6, display: 'inline-block' }} />
+                                        {n.status}
+                                    </td>
+                                    <td>{n.cpu != null ? `${n.cpu}%` : '—'}</td>
+                                    <td>{n.memoryMb != null ? `${n.memoryMb} MB` : '—'}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </Card>
+
+                <Card title="Throughput History">
+                    {state.rpsHistory.length === 0 ? (
+                        <EmptyState
+                            icon={Gauge}
+                            title="Awaiting throughput data"
+                            description="The sparkline will populate once your gateway starts reporting requests-per-second."
+                        />
+                    ) : (
+                        <Sparkline data={state.rpsHistory} />
+                    )}
+                </Card>
+            </div>
         </div>
     )
 }
 
-export default function Dashboard({ store }) {
-    const { metrics, events, rpsHistory, nodeStatus } = store
-    const recent = events.slice(-10).reverse()
+function Sparkline({ data }) {
+    const max = Math.max(...data.map(d => d.v), 1)
+    const w = 100 / Math.max(data.length - 1, 1)
     return (
-        <div>
-            {/* Metrics row */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 16 }}>
-                <MetricCard label="Total Keys"      value={metrics.keys.toLocaleString()} sub="↑ 12 this minute"   subColor="#22c55e" icon={Database}  accentColor="#00d4ff" />
-                <MetricCard label="Cache Hit Rate"  value={metrics.hitRate + '%'}         sub="Redis read-through"                     icon={Zap}       accentColor="#22c55e" />
-                <MetricCard label="Requests / sec"  value={metrics.rps.toLocaleString()}  sub="↑ 8% vs last min"   subColor="#22c55e" icon={Activity}   accentColor="#8b5cf6" />
-                <MetricCard label="Replication Lag" value={metrics.lag + 'ms'}            sub="Within threshold"   subColor="#22c55e" icon={Clock}      accentColor="#f59e0b" />
-            </div>
-
-            {/* Topology + Event feed */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
-                <Card style={{ height: 260 }}>
-                    <SectionLabel>Cluster Topology</SectionLabel>
-                    <div style={{ height: 220 }}>
-                        <ClusterCanvas nodeStatus={nodeStatus} />
-                    </div>
-                </Card>
-                <Card>
-                    <SectionLabel style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
-                        <span>Live Events</span><LiveDot />
-                    </SectionLabel>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxHeight: 210, overflowY: 'auto' }}>
-                        {recent.length === 0
-                            ? <div style={{ color: 'var(--text3)', fontSize: 11, fontFamily: 'var(--mono)' }}>Waiting for events...</div>
-                            : recent.map(ev => <EventRow key={ev.id} event={ev} />)
-                        }
-                    </div>
-                </Card>
-            </div>
-
-            {/* Sparkline */}
-            <Card>
-                <SectionLabel>Requests Per Second — Last 30s</SectionLabel>
-                <Sparkline data={rpsHistory} />
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
-                    <span style={{ fontSize: 10, fontFamily: 'var(--mono)', color: 'var(--text3)' }}>30s ago</span>
-                    <span style={{ fontSize: 10, fontFamily: 'var(--mono)', color: '#00d4ff' }}>now — {metrics.rps.toLocaleString()} rps</span>
-                </div>
-            </Card>
-        </div>
+        <svg viewBox="0 0 100 40" preserveAspectRatio="none" style={{ width: '100%', height: 100 }}>
+            <polyline
+                points={data.map((d, i) => `${i * w},${40 - (d.v / max) * 36}`).join(' ')}
+                fill="none"
+                stroke="var(--cyan)"
+                strokeWidth="1.5"
+                vectorEffect="non-scaling-stroke"
+            />
+        </svg>
     )
 }
