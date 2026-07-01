@@ -5,14 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6077b9dd-15d0-4b2a-9768-94624c81a152" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../api-gateway/api-gateway/src/main/java/com/dist/api_gateway/controller/DashboardStatsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../cluster-service/cluster-service/src/main/java/com/dist/cluster_service/config/CorsConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/eureka-service/src/main/java/com/dist/eureka_service/Config/CorsConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../key_value-service/key_value-service/src/main/java/com/dist/key_value_service/config/CorsConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../metrics-service/metrics-service/src/main/java/com/dist/metrics_service/config/CorsConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../replication-service/replication-service/src/main/java/com/dist/replication_service/config/CorsConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../api-gateway/api-gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../api-gateway/api-gateway/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../key_value-service/key_value-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../key_value-service/key_value-service/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/package.json" afterDir="false" />
@@ -22,7 +14,6 @@
       <change beforePath="$PROJECT_DIR$/../../frontend/src/components/Topbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/components/Topbar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/src/components/UI.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/components/UI.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/src/data/seed.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/data/seed.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../frontend/src/hooks/useCluster.js" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/src/hooks/useClusterStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/hooks/useClusterStore.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../frontend/src/pages/AuditLog.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../frontend/src/pages/AuditLog.jsx" afterDir="false" />
@@ -93,7 +84,7 @@
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Spring Boot.EurekaServiceApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "feature/frontend",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -121,7 +112,7 @@
       <updated>1782713423331</updated>
       <workItem from="1782713424574" duration="2593000" />
       <workItem from="1782801142632" duration="4738000" />
-      <workItem from="1782871237920" duration="1289000" />
+      <workItem from="1782871237920" duration="2317000" />
     </task>
     <servers />
   </component>
